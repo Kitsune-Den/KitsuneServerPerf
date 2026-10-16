@@ -1,0 +1,10 @@
+<configs>
+
+	<!-- The Server Performance window, opened from the Esc menu's Server Perf button. -->
+	<append xpath="/xui">
+		<window_group name="kspSettings">
+			<window name="kspSettingsWindow" />
+		</window_group>
+	</append>
+
+</configs>

@@ -1,0 +1,113 @@
+<configs>
+
+	<!-- ================================================================ -->
+	<!-- Esc menu: a Server Perf button under Options (KitsuneUI's button -->
+	<!-- lands there too; whichever loads later sits right under Options). -->
+	<!-- ================================================================ -->
+	<insertAfter xpath="/windows/window[@name='ingameMenu']/grid[@name='buttons']/simplebutton[@name='btnOptions']">
+		<rect name="kspSettingsEntry" width="250" height="46" controller="KspSettingsOpener, KitsuneServerPerf_UI">
+			<simplebutton name="btnServerPerf" depth="3" width="250" height="46" caption_key="kspMenuButton" font_size="34" />
+		</rect>
+	</insertAfter>
+
+	<!-- ================================================================ -->
+	<!-- The Server Performance window. Built from vanilla templates, so  -->
+	<!-- KitsuneUI's restyle of them applies when it's installed.         -->
+	<!-- Fix rows are filled in from whatever the server reports.         -->
+	<!-- ================================================================ -->
+	<append xpath="/windows">
+		<window name="kspSettingsWindow" width="560" height="660" pos="-280,330" anchor="Center" depth="40" cursor_area="true" controller="KspSettingsWindow, KitsuneServerPerf_UI">
+			<rect name="header" height="43" depth="1">
+				<headerbg />
+				<label style="header.name" name="kspTitle" pos="6,-6" width="500" text_key="kspTitle" />
+			</rect>
+			<sprite depth="0" name="kspBody" sprite="menu_empty3px" color="[darkGrey]" type="sliced" fillcenter="true" pos="0,-40" width="560" height="620" />
+			<sprite depth="1" name="kspBorder" sprite="menu_empty2px" color="[black]" type="sliced" fillcenter="false" pos="0,-40" width="560" height="620" />
+
+			<label depth="3" name="lblStatus" pos="20,-50" width="520" height="28" font_size="20" justify="left" pivot="topleft" overflow="shrinkcontent" effect="outline" text="" />
+
+			<simplebutton name="btnTab_fixes" depth="3" pos="20,-82" width="255" height="40" font_size="22" caption_key="kspTabFixes" />
+			<simplebutton name="btnTab_ai" depth="3" pos="285,-82" width="255" height="40" font_size="22" caption_key="kspTabAi" />
+
+			<!-- Row slots, laid out by the controller from the groups the server reports:
+			     a heading, a group toggle, or a fix toggle with its state on the right. -->
+			<rect name="kspTab_fixes" width="560" height="660">
+				<label depth="4" name="lblHeading0" pos="22,-153" width="516" height="30" pivot="left" justify="left" font_size="22" effect="outline" text="" visible="false" />
+				<togglebutton name="tglFix0" depth="3" pos="20,-136" width="380" height="34" font_size="20" caption="" />
+				<label depth="4" name="lblFixState0" pos="424,-153" width="116" height="30" pivot="left" justify="right" font_size="18" overflow="shrinkcontent" effect="outline" text="" />
+				<label depth="4" name="lblHeading1" pos="22,-191" width="516" height="30" pivot="left" justify="left" font_size="22" effect="outline" text="" visible="false" />
+				<togglebutton name="tglFix1" depth="3" pos="20,-174" width="380" height="34" font_size="20" caption="" />
+				<label depth="4" name="lblFixState1" pos="424,-191" width="116" height="30" pivot="left" justify="right" font_size="18" overflow="shrinkcontent" effect="outline" text="" />
+				<label depth="4" name="lblHeading2" pos="22,-229" width="516" height="30" pivot="left" justify="left" font_size="22" effect="outline" text="" visible="false" />
+				<togglebutton name="tglFix2" depth="3" pos="20,-212" width="380" height="34" font_size="20" caption="" />
+				<label depth="4" name="lblFixState2" pos="424,-229" width="116" height="30" pivot="left" justify="right" font_size="18" overflow="shrinkcontent" effect="outline" text="" />
+				<label depth="4" name="lblHeading3" pos="22,-267" width="516" height="30" pivot="left" justify="left" font_size="22" effect="outline" text="" visible="false" />
+				<togglebutton name="tglFix3" depth="3" pos="20,-250" width="380" height="34" font_size="20" caption="" />
+				<label depth="4" name="lblFixState3" pos="424,-267" width="116" height="30" pivot="left" justify="right" font_size="18" overflow="shrinkcontent" effect="outline" text="" />
+				<label depth="4" name="lblHeading4" pos="22,-305" width="516" height="30" pivot="left" justify="left" font_size="22" effect="outline" text="" visible="false" />
+				<togglebutton name="tglFix4" depth="3" pos="20,-288" width="380" height="34" font_size="20" caption="" />
+				<label depth="4" name="lblFixState4" pos="424,-305" width="116" height="30" pivot="left" justify="right" font_size="18" overflow="shrinkcontent" effect="outline" text="" />
+				<label depth="4" name="lblHeading5" pos="22,-343" width="516" height="30" pivot="left" justify="left" font_size="22" effect="outline" text="" visible="false" />
+				<togglebutton name="tglFix5" depth="3" pos="20,-326" width="380" height="34" font_size="20" caption="" />
+				<label depth="4" name="lblFixState5" pos="424,-343" width="116" height="30" pivot="left" justify="right" font_size="18" overflow="shrinkcontent" effect="outline" text="" />
+				<label depth="4" name="lblHeading6" pos="22,-381" width="516" height="30" pivot="left" justify="left" font_size="22" effect="outline" text="" visible="false" />
+				<togglebutton name="tglFix6" depth="3" pos="20,-364" width="380" height="34" font_size="20" caption="" />
+				<label depth="4" name="lblFixState6" pos="424,-381" width="116" height="30" pivot="left" justify="right" font_size="18" overflow="shrinkcontent" effect="outline" text="" />
+				<label depth="4" name="lblHeading7" pos="22,-419" width="516" height="30" pivot="left" justify="left" font_size="22" effect="outline" text="" visible="false" />
+				<togglebutton name="tglFix7" depth="3" pos="20,-402" width="380" height="34" font_size="20" caption="" />
+				<label depth="4" name="lblFixState7" pos="424,-419" width="116" height="30" pivot="left" justify="right" font_size="18" overflow="shrinkcontent" effect="outline" text="" />
+				<label depth="4" name="lblHeading8" pos="22,-457" width="516" height="30" pivot="left" justify="left" font_size="22" effect="outline" text="" visible="false" />
+				<togglebutton name="tglFix8" depth="3" pos="20,-440" width="380" height="34" font_size="20" caption="" />
+				<label depth="4" name="lblFixState8" pos="424,-457" width="116" height="30" pivot="left" justify="right" font_size="18" overflow="shrinkcontent" effect="outline" text="" />
+				<label depth="4" name="lblHeading9" pos="22,-495" width="516" height="30" pivot="left" justify="left" font_size="22" effect="outline" text="" visible="false" />
+				<togglebutton name="tglFix9" depth="3" pos="20,-478" width="380" height="34" font_size="20" caption="" />
+				<label depth="4" name="lblFixState9" pos="424,-495" width="116" height="30" pivot="left" justify="right" font_size="18" overflow="shrinkcontent" effect="outline" text="" />
+				<label depth="4" name="lblHeading10" pos="22,-533" width="516" height="30" pivot="left" justify="left" font_size="22" effect="outline" text="" visible="false" />
+				<togglebutton name="tglFix10" depth="3" pos="20,-516" width="380" height="34" font_size="20" caption="" />
+				<label depth="4" name="lblFixState10" pos="424,-533" width="116" height="30" pivot="left" justify="right" font_size="18" overflow="shrinkcontent" effect="outline" text="" />
+				<label depth="4" name="lblHeading11" pos="22,-571" width="516" height="30" pivot="left" justify="left" font_size="22" effect="outline" text="" visible="false" />
+				<togglebutton name="tglFix11" depth="3" pos="20,-554" width="380" height="34" font_size="20" caption="" />
+				<label depth="4" name="lblFixState11" pos="424,-571" width="116" height="30" pivot="left" justify="right" font_size="18" overflow="shrinkcontent" effect="outline" text="" />
+				<label depth="4" name="lblHeading12" pos="22,-609" width="516" height="30" pivot="left" justify="left" font_size="22" effect="outline" text="" visible="false" />
+				<togglebutton name="tglFix12" depth="3" pos="20,-592" width="380" height="34" font_size="20" caption="" />
+				<label depth="4" name="lblFixState12" pos="424,-609" width="116" height="30" pivot="left" justify="right" font_size="18" overflow="shrinkcontent" effect="outline" text="" />
+				<label depth="4" name="lblHeading13" pos="22,-647" width="516" height="30" pivot="left" justify="left" font_size="22" effect="outline" text="" visible="false" />
+				<togglebutton name="tglFix13" depth="3" pos="20,-630" width="380" height="34" font_size="20" caption="" />
+				<label depth="4" name="lblFixState13" pos="424,-647" width="116" height="30" pivot="left" justify="right" font_size="18" overflow="shrinkcontent" effect="outline" text="" />
+			</rect>
+
+			<rect name="kspTab_ai" width="560" height="660" visible="false">
+				<togglebutton name="tglAiOn" depth="3" pos="20,-136" width="520" height="38" font_size="24" caption_key="kspAiOn" />
+				<label depth="3" name="lblAiDesc" pos="20,-180" width="520" height="56" pivot="topleft" justify="left" font_size="18" effect="outline" text_key="kspAiDesc" />
+				<togglebutton name="tglAiEnemies" depth="3" pos="20,-244" width="520" height="34" font_size="20" caption_key="kspAiEnemies" />
+				<togglebutton name="tglAiAnimals" depth="3" pos="20,-282" width="520" height="34" font_size="20" caption_key="kspAiAnimals" />
+				<togglebutton name="tglAiNpcs" depth="3" pos="20,-320" width="520" height="34" font_size="20" caption_key="kspAiNpcs" />
+				<togglebutton name="tglAiAlert" depth="3" pos="20,-358" width="520" height="34" font_size="20" caption_key="kspAiAlert" />
+				<togglebutton name="tglAiBloodMoon" depth="3" pos="20,-396" width="520" height="34" font_size="20" caption_key="kspAiBloodMoon" />
+				<label depth="3" name="lblTiersHeading" pos="22,-462" width="132" height="30" pivot="left" justify="left" font_size="22" effect="outline" text_key="kspTiersLabel" />
+				<simplebutton name="btnPreset_gentle" depth="3" pos="160,-444" width="120" height="36" font_size="20" caption_key="kspPresetGentle" />
+				<simplebutton name="btnPreset_default" depth="3" pos="286,-444" width="120" height="36" font_size="20" caption_key="kspPresetDefault" />
+				<simplebutton name="btnPreset_strong" depth="3" pos="412,-444" width="120" height="36" font_size="20" caption_key="kspPresetStrong" />
+				<label depth="3" name="lblTiers" pos="22,-490" width="516" height="28" pivot="topleft" justify="left" font_size="18" overflow="shrinkcontent" effect="outline" text="" />
+				<label depth="3" name="lblTiersHint" pos="22,-524" width="516" height="52" pivot="topleft" justify="left" font_size="16" effect="outline" text_key="kspTiersHint" />
+			</rect>
+
+			<simplebutton name="btnRefresh" depth="3" pos="20,-608" width="255" height="40" font_size="22" caption_key="kspRefresh" />
+			<simplebutton name="btnClose" depth="3" pos="285,-608" width="255" height="40" font_size="22" caption_key="xuiClose" />
+		</window>
+	</append>
+
+	<!-- With KitsuneUI installed, use its glass panel and flame icon like its own windows. -->
+	<conditional>
+		<if cond="mod_loaded('KitsuneUI')">
+			<set xpath="/windows/window[@name='kspSettingsWindow']/sprite[@name='kspBody']/@sprite">ku_panel_body</set>
+			<set xpath="/windows/window[@name='kspSettingsWindow']/sprite[@name='kspBody']/@color">[white]</set>
+			<remove xpath="/windows/window[@name='kspSettingsWindow']/sprite[@name='kspBorder']" />
+			<insertBefore xpath="/windows/window[@name='kspSettingsWindow']/rect[@name='header']/label[@name='kspTitle']">
+				<sprite depth="2" name="windowIcon" pos="6,-6" width="30" height="30" sprite="ku_icon_flame" color="[kuAccent]" />
+			</insertBefore>
+			<set xpath="/windows/window[@name='kspSettingsWindow']/rect[@name='header']/label[@name='kspTitle']/@pos">44,-6</set>
+		</if>
+	</conditional>
+
+</configs>

@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Optional in-game settings page for KitsuneServerPerf (Esc menu > Server Performance).
+       Unlike the core mod it has UI, and the server sends its UI layout to every client,
+       so a server that installs this add-on needs it on clients too. -->
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <OutputType>Library</OutputType>
+    <RootNamespace>KitsuneServerPerf.UI</RootNamespace>
+    <AssemblyName>KitsuneServerPerf_UI</AssemblyName>
+    <LangVersion>latest</LangVersion>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Deterministic>true</Deterministic>
+    <DebugType Condition=" '$(Configuration)' == 'Release' ">none</DebugType>
+    <DebugSymbols Condition=" '$(Configuration)' == 'Release' ">false</DebugSymbols>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+    <LibsDir>$(MSBuildThisFileDirectory)..\libs</LibsDir>
+    <ModFolder>$(MSBuildThisFileDirectory)..\KitsuneServerPerf_UI</ModFolder>
+    <OutputPath>$(ModFolder)\</OutputPath>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>$(LibsDir)\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(LibsDir)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="LogLibrary">
+      <HintPath>$(LibsDir)\LogLibrary.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(LibsDir)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

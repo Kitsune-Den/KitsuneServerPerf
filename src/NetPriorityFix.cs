@@ -30,8 +30,8 @@ namespace KitsuneServerPerf
                 return null;
             }
 
-            // Not exactly one match means the game changed; don't leave a guess in place.
-            ModInit.Harmony.Unpatch(target, HarmonyPatchType.Transpiler, ModInit.HarmonyId);
+            // Not exactly one match means the game changed; returning a reason makes
+            // Fixes remove the patch again rather than leave a guess in place.
             return $"expected the bug once, found it {rewrites} times (game version changed?)";
         }
 

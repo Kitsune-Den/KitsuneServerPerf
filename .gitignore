@@ -13,3 +13,5 @@ libs/
 
 # Release packaging artifacts
 *.zip
+/KitsuneServerPerf_UI/*.dll
+/KitsuneServerPerf_UI/*.pdb

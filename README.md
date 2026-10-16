@@ -2,6 +2,8 @@
 
 🦊 **Part of the [Kitsune Systems Collection](https://github.com/Kitsune-Den)**
 
+![Kitsune Performance](kitsune-performance.jpg)
+
 **Server-side CPU fixes for 7 Days to Die, plus a profiler that tells you which mod is eating your server.**
 
 Someone on r/7daystodie asked for server performance mods for Asylum 3.3 because it was hammering their CPU. The answers were "try a performance mod" without naming one. So we went and looked at where a 3.3 dedicated server actually spends its time, and at all ~80 code mods in the Asylum pack.
@@ -95,7 +97,25 @@ Tested so far: vanilla 3.3 (loads clean, every fix applies) and The Asylum 3.3 w
 
 ## Settings
 
-`Mods/KitsuneServerPerf/Settings.xml`, read once at startup. Every fix has an `enabled` switch. If a fix ever misbehaves on your server, switch it off and tell us.
+Three ways to change things, all of them stick (they're saved to `Mods/KitsuneServerPerf/Settings.xml`):
+
+**Edit `Settings.xml`** and restart. Every fix has an `enabled` switch. If a fix ever misbehaves on your server, switch it off and tell us.
+
+**From the console**, live, no restart:
+
+```
+kperf settings                      what's on, what's off, and why
+kperf set ShockShaderElectrocuteFilter off
+kperf set AiThrottle on
+kperf set ai.skipWhenAlert off
+kperf set ai.tiers 40:0.05,80:0.025
+```
+
+Admin-only by default, like any server command. Switching a fix off removes its patches on the spot; switching it on puts them back.
+
+**In game**, with the optional **KitsuneServerPerf_UI** add-on: Esc menu > **Server Perf**. One tab of fix toggles, each showing whether it's on or why it was skipped, and one tab for the AI throttle with Gentle / Default / Strong distance presets. Admins only; everyone else gets told so.
+
+The add-on is a separate download because it has UI, and the server sends its UI layout to every player who joins. So unlike the core mod, **if your server runs the add-on, every player needs it too**. It talks to the server through the normal console command path (no custom network packets), and with KitsuneUI installed it picks up KitsuneUI's look.
 
 ## Build it yourself
 
@@ -113,10 +133,10 @@ UnityEngine.PhysicsModule.dll
 and `0Harmony.dll` from `Mods/0_TFP_Harmony/`. Then:
 
 ```
-dotnet build -c Release
+dotnet build KitsuneServerPerf.sln -c Release
 ```
 
-The mod folder is ready at `KitsuneServerPerf/`.
+The mod folders are ready at `KitsuneServerPerf/` and `KitsuneServerPerf_UI/`. `01-CreateRelease.bat` builds both and zips them.
 
 ## What's next
 

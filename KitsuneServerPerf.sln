@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitsuneServerPerf", "KitsuneServerPerf.csproj", "{2276FB7F-DF31-4665-87F4-8D47BDAC2843}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitsuneServerPerf_UI", "ui\KitsuneServerPerf_UI.csproj", "{75C1BB5A-D1A0-4D9F-8C58-95D71EFDE4D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{2276FB7F-DF31-4665-87F4-8D47BDAC2843}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2276FB7F-DF31-4665-87F4-8D47BDAC2843}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2276FB7F-DF31-4665-87F4-8D47BDAC2843}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75C1BB5A-D1A0-4D9F-8C58-95D71EFDE4D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75C1BB5A-D1A0-4D9F-8C58-95D71EFDE4D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75C1BB5A-D1A0-4D9F-8C58-95D71EFDE4D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75C1BB5A-D1A0-4D9F-8C58-95D71EFDE4D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

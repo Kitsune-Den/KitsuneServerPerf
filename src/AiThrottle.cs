@@ -16,23 +16,32 @@ namespace KitsuneServerPerf
     // still run every tick.
     internal static class AiThrottle
     {
-        public static void Apply()
+        public const string FixName = "AiThrottle";
+
+        // Tiers and options are read from Settings every tick, so they can change while
+        // this is on; only switching it on or off adds or removes the patch.
+        public static string Apply()
         {
-            if (Settings.AiTiers.Count == 0)
-            {
-                ModLog.Warn("AiThrottle is on but has no valid tiers, nothing to do");
-                return;
-            }
             ModInit.Harmony.Patch(
                 AccessTools.Method(typeof(World), nameof(World.EntityActivityUpdate)),
                 postfix: new HarmonyMethod(typeof(AiThrottle), nameof(Postfix)));
 
+            ModLog.Info("AiThrottle: tiers " + TierText());
+            if (Settings.AiTiers.Count == 0)
+            {
+                ModLog.Warn("AiThrottle is on but has no valid tiers, so it does nothing yet");
+            }
+            return null;
+        }
+
+        public static string TierText()
+        {
             var tiers = new List<string>();
             foreach (AiTier t in Settings.AiTiers)
             {
-                tiers.Add($"{System.Math.Sqrt(t.DistanceSq):0} m -> {t.Scale}");
+                tiers.Add($"{t.Distance:0} m -> {t.Scale}");
             }
-            ModLog.Info("AiThrottle: on, tiers " + string.Join(", ", tiers));
+            return tiers.Count == 0 ? "none" : string.Join(", ", tiers);
         }
 
         private static void Postfix(World __instance)

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xml>
+	<Name value="KitsuneServerPerf_UI" />
+	<DisplayName value="Kitsune Server Perf - Settings Page" />
+	<Description value="Optional in-game settings page for KitsuneServerPerf (Esc menu > Server Perf). Server admins can switch fixes and the AI throttle without editing files. Install on the server and on every client." />
+	<Website value="https://github.com/Kitsune-Den/KitsuneServerPerf" />
+	<Author value="AdaInTheLab" />
+	<Version value="0.2.0" />
+</xml>
