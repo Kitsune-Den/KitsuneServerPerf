@@ -89,6 +89,10 @@ Server-side only. Clients don't need it.
 
 Needs 7 Days to Die V3.x with the built-in `0_TFP_Harmony` mod. EAC has to be off, like any code mod. It doesn't ship its own Harmony.
 
+Not just for Asylum. `kperf` and the vanilla fixes work on any V3.x server, vanilla or modded, and the fixes for specific mods (SCore, ShockShaderPatch, WMMZombieRandomBuffs and so on) switch themselves on wherever that mod shows up. If a mod isn't there, or is a version whose code doesn't look like what the fix expects, the fix logs "skipped" and stays out of the way.
+
+Tested so far: vanilla 3.3 (loads clean, every fix applies) and The Asylum 3.3 with a player and hordes (all the numbers in this README). Not tested yet on V2.x or other big overhauls. If you run it on one, a `kperf` report would be very welcome.
+
 ## Settings
 
 `Mods/KitsuneServerPerf/Settings.xml`, read once at startup. Every fix has an `enabled` switch. If a fix ever misbehaves on your server, switch it off and tell us.
