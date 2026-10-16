@@ -1,0 +1,70 @@
+[center][img]https://raw.githubusercontent.com/Kitsune-Den/KitsuneServerPerf/main/kitsune-performance.jpg[/img][/center]
+
+[size=5][b]Your server isn't slow. Something on it is.[/b][/size]
+
+Someone on r/7daystodie asked for a server performance mod for The Asylum 3.3 because it was cooking their CPU. Nobody could name one. So we built a profiler, ran a real Asylum server with a horde on it, and fixed what we found.
+
+The biggest thing we found? A cosmetic shader mod. It was walking every renderer and material on every zombie, every single frame, to switch off an electric-shock effect that was already off. 34 milliseconds of CPU every second, more than SCore. Now it's under one.
+
+[line]
+
+[size=4][b]kperf: find out what's actually eating your server[/b][/size]
+A console command (telnet, web console or F1) that times the game's busy code and every Harmony patch every mod has installed, then tells you in plain numbers where your CPU goes. Per game method, per mod, per patch.
+[code]kperf start 60
+kperf census[/code]
+Run it while people are playing and zombies are about. It cleans up after itself when it's done.
+
+[size=4][b]Fixes that don't change gameplay[/b][/size]
+Each one does exactly what the original code did, with less work. All on by default, and any of them can be switched off.
+
+[b]Vanilla (any server)[/b]
+[list]
+[*][b]Network priority bug.[/b] The game works out zombie-to-player distance as x*x + z + z instead of x*x + z*z, so lots of zombies get sent to clients every tick instead of every 3 to 10. It's in both V2.6 and V3.3.
+[*][b]Line-of-sight checks.[/b] Every sight check re-layered the zombie's whole skeleton, twice. Now it only touches the colliders, which is all a raycast can hit. Dedicated servers only.
+[/list]
+
+[b]Asylum Optimized[/b] (each one switches on only when that mod is loaded)
+[list]
+[*][b]ShockShaderPatch:[/b] 25 µs down to 0.7 µs per zombie per frame. About 33 ms of CPU a second back with 65 zombies.
+[*][b]SCore:[/b] debug labels nobody can see, feature flags re-read every frame, log strings built and thrown away, weather CVars rewritten every tick. SCore went from 19 to 13.5 ms/s with about 45 zombies.
+[*][b]CrystalHellHusbandry, AsylumHealFix, Zombie Random Buffs:[/b] hot patches that now only run when they'd actually do something.
+[/list]
+None of these remove the other mod's code. Each is a small check in front of it that skips only the calls that would have done nothing anyway.
+
+[size=4][b]AI distance throttling (optional, off by default)[/b][/size]
+Far-away zombies that aren't chasing anything think less often. Zombies near players, anything with a target, and blood moon are left alone. On our Asylum test horde it cut the cost of each zombie tick from 73 µs to 55 µs and halved AI time, and the far zombies didn't feel any different. It is a gameplay change though, so it's your call.
+
+[size=4][b]Settings[/b][/size]
+[list]
+[*][b]Settings.xml[/b] in the mod folder.
+[*][b]Console, live, no restart:[/b] kperf settings, kperf set ShockShaderElectrocuteFilter off, kperf set group:mods off, kperf set AiThrottle on
+[*][b]In game[/b] with the optional Settings Page add-on: Esc menu, Server Perf. Admins only.
+[/list]
+[img]https://raw.githubusercontent.com/Kitsune-Den/KitsuneServerPerf/main/docs/settings-page.png[/img]
+
+[size=4][b]What about Undead Legacy?[/b][/size]
+We tested it too (2.7.40 on V2.6, about 50 zombies on a player). Short version: UL is already lean. All 366 of its patches came to about 7 ms of CPU a second, and most of that is real movement work. On UL you get the vanilla fixes and kperf. If a UL server struggles, it's almost certainly how many zombies are alive, and kperf census will show you that.
+
+[size=4][b]Install[/b][/size]
+[list=1]
+[*]Unzip so you have Mods/KitsuneServerPerf/ on your [b]server[/b].
+[*]Restart. The log lists every fix and whether it's on, off or skipped.
+[/list]
+[list]
+[*][b]Server-side only.[/b] Players don't need anything.
+[*]7 Days to Die [b]V2.6 or V3.x[/b]. EAC off, like any code mod.
+[*]Single player and hosting work too. A couple of fixes are dedicated-only and skip themselves.
+[/list]
+
+[b]The optional Settings Page add-on is different.[/b] The server sends its UI to everyone who joins, so if your server runs the add-on, [b]every player needs it too[/b]. Want to stay server-only? Skip the add-on and use the console commands. They do everything the page does.
+
+[size=4][b]Tested on[/b][/size]
+[list]
+[*]Vanilla 3.3
+[*]The Asylum 3.3, with a player and hordes (all the numbers above)
+[*]Undead Legacy 2.7.40 on V2.6
+[/list]
+Running something else? Post a kperf report in the comments. That's how the next round of fixes gets picked.
+
+[line]
+Open source (MIT) on [url=https://github.com/Kitsune-Den/KitsuneServerPerf]GitHub[/url]. Part of the Kitsune Systems Collection by AdaInTheLab.
