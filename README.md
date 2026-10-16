@@ -64,6 +64,14 @@ It never touches the zombies vanilla keeps at full speed, never raises a rate, a
 
 Turn it on, play a night, see if it feels off.
 
+We did. Asylum test server, a ~45 zombie wandering horde, default tiers. The throttle picked up 9 to 18 of them at a time (the stragglers hanging back), and the ones in your face stayed at full speed. Compared to the same horde with it off:
+
+- each entity tick: 73 µs down to 55 µs
+- zombie AI updates (`EAIManager.Update`): 9.0 ms/s down to 4.8 ms/s
+- and it ticked *more* entities per second while spending less total time doing it
+
+Playing through it, the far zombies didn't feel any different. One run each with someone actively killing the horde, so don't hold us to the exact percentages. Still off by default, because it's a gameplay change and that should be your call.
+
 ## Install
 
 Server-side only. Clients don't need it.
