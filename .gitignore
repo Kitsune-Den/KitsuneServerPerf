@@ -1,0 +1,15 @@
+build/
+bin/
+obj/
+dist/
+libs/
+*.user
+.vs/
+*.suo
+
+# Mod folder: only ModInfo.xml and Settings.xml are source; built DLLs are build output
+/KitsuneServerPerf/*.dll
+/KitsuneServerPerf/*.pdb
+
+# Release packaging artifacts
+*.zip

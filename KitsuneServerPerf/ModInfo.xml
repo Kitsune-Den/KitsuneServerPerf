@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xml>
+	<Name value="KitsuneServerPerf" />
+	<DisplayName value="Kitsune Server Perf" />
+	<Description value="Server-side CPU fixes for 7 Days to Die and heavy overhaul packs, plus a kperf console command that shows which code and which mods use the server's time." />
+	<Website value="https://github.com/Kitsune-Den/KitsuneServerPerf" />
+	<Author value="AdaInTheLab" />
+	<Version value="0.1.0" />
+</xml>

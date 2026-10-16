@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Kitsune Server Perf settings. Read once when the server starts.
+
+  Fixes: each one does the same thing the game (or the mod it patches) already did,
+  just with less CPU. Fixes for other mods only switch on when that mod is loaded.
+
+  AiThrottle: CHANGES GAMEPLAY. Far-away idle zombies think less often, so they
+  react a little slower to things happening around them. Off by default.
+-->
+<KitsuneServerPerf>
+
+	<!-- Vanilla: zombie network priority used x*x + z + z instead of x*x + z*z,
+	     so many zombies were sent to clients every tick instead of every 3-10 ticks. -->
+	<Fix name="NetPriorityDistance" enabled="true" />
+
+	<!-- Vanilla: every line-of-sight check re-layered the zombie's whole bone tree twice.
+	     Now only its colliders are touched, which is all the raycast cares about.
+	     Dedicated servers only. -->
+	<Fix name="SightCheckLayers" enabled="true" />
+
+	<!-- SCore: builds an NPC debug label every AI update on dedicated servers,
+	     where nothing can ever display it. -->
+	<Fix name="SCoreDebugLabel" enabled="true" />
+
+	<!-- SCore: feature flags are re-read from the config block on every call,
+	     including once per zombie per frame. Results are cached per world. -->
+	<Fix name="SCoreFeatureFlagCache" enabled="true" />
+
+	<!-- CrystalHellHusbandry: its EffectManager.GetValue postfix does string work on
+	     every stat lookup in the game. Now it only runs for the stats it changes. -->
+	<Fix name="HusbandryGetValueFilter" enabled="true" />
+
+	<!-- AsylumHealFix: reads a field by reflection on every CVar change in the game.
+	     Now it only runs for the one CVar it cares about. -->
+	<Fix name="HealFixCVarFilter" enabled="true" />
+
+	<!-- WMMZombieRandomBuffs + AsylumZRBCompat: run on every entity every frame.
+	     Now they skip entities they would ignore anyway (players, animals, NPCs). -->
+	<Fix name="RandomBuffsUpdateFilter" enabled="true" />
+
+	<!--
+	  AI distance throttling. Vanilla already slows AI down for zombies that are not
+	  among the closest few to a player: 0.3 within 15 m, 0.1 beyond that (1.0 = think every tick).
+	  These tiers slow it further for zombies that are farther away still.
+
+	  A tier only ever lowers the rate, never raises it, and never touches the closest
+	  zombies vanilla keeps at full speed.
+
+	  enemies / animals / npcs: which kinds of entity to throttle.
+	  skipWhenAlert: leave zombies alone while they have a target or are investigating a noise.
+	  skipDuringBloodMoon: leave everything alone during blood moon.
+	-->
+	<AiThrottle enabled="false" enemies="true" animals="false" npcs="false" skipWhenAlert="true" skipDuringBloodMoon="true">
+		<Tier distance="40" scale="0.05" />
+		<Tier distance="80" scale="0.025" />
+	</AiThrottle>
+
+</KitsuneServerPerf>
