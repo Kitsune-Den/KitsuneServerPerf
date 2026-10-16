@@ -27,6 +27,14 @@
 	     including once per zombie per frame. Results are cached per world. -->
 	<Fix name="SCoreFeatureFlagCache" enabled="true" />
 
+	<!-- SCore: its per-zombie, per-frame strafe hook builds two log strings that are thrown
+	     away unless its EntitySpeedCheck troubleshooting log is on. Same work, no strings. -->
+	<Fix name="SCoreStrafeLateUpdate" enabled="true" />
+
+	<!-- SCore: writes three weather CVars on every entity every tick. They're server-only
+	     and setting a CVar to the value it already has does nothing, so unchanged ones are skipped. -->
+	<Fix name="SCoreWeatherCVars" enabled="true" />
+
 	<!-- CrystalHellHusbandry: its EffectManager.GetValue postfix does string work on
 	     every stat lookup in the game. Now it only runs for the stats it changes. -->
 	<Fix name="HusbandryGetValueFilter" enabled="true" />

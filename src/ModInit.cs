@@ -47,6 +47,8 @@ namespace KitsuneServerPerf
 
             Apply("SCoreDebugLabel", SCoreFixes.ApplyDebugLabel);
             Apply("SCoreFeatureFlagCache", SCoreFixes.ApplyFeatureFlagCache);
+            Apply("SCoreStrafeLateUpdate", SCoreFixes.ApplyStrafeLateUpdate);
+            Apply("SCoreWeatherCVars", SCoreFixes.ApplyWeatherCVars);
             Apply("HusbandryGetValueFilter", AsylumFixes.ApplyHusbandryGetValue);
             Apply("HealFixCVarFilter", AsylumFixes.ApplyHealFix);
             Apply("RandomBuffsUpdateFilter", AsylumFixes.ApplyRandomBuffs);

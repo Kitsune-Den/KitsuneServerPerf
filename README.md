@@ -40,6 +40,8 @@ Each of these does exactly what the original code did, with less work. All on by
 
 - **SCore**: on a dedicated server, the utility AI builds a multi-line debug label for every NPC on every AI update. Only the client HUD ever draws it. Skipped on dedicated.
 - **SCore**: `Configuration.CheckFeatureStatus` re-scans the config block on every call, including once per zombie per frame. Results are now cached per world.
+- **SCore**: its strafe hook on `AvatarZombieController.LateUpdate` runs on every zombie every frame and builds two log strings (float-to-string and all) that get thrown away unless its EntitySpeedCheck troubleshooting log is on. Same update, no strings. 6.6 µs to 2.7 µs per zombie per frame.
+- **SCore**: writes three weather CVars (`_sc_rain`, `_sc_snow`, `_sc_cloud`) on every entity every tick. Those never go to clients, and setting a CVar to the value it already has does nothing, so unchanged ones are skipped. Only switches on if nothing else unexpected hooks `SetCustomVar`. 3.3 µs to 1.2 µs per entity per tick.
 - **CrystalHellHusbandry**: its `EffectManager.GetValue` postfix runs on every stat lookup in the game and does string work before it checks which stat it's looking at. It only changes 6 or so stats. Now it only runs for those.
 - **AsylumHealFix**: reads a field by reflection after every CVar change in the game to see if it's the one CVar it cares about. Now it checks directly first.
 - **WMMZombieRandomBuffs + AsylumZRBCompat**: both run every frame on every entity, players and animals included, lower-casing the class name each time. Now they only run on entities they'd actually do something to.
@@ -106,7 +108,7 @@ The mod folder is ready at `KitsuneServerPerf/`.
 
 ## What's next
 
-Real numbers decide what gets fixed next. With ShockShader sorted, SCore is the most expensive mod on an Asylum server (about 19 ms/s with ~45 zombies): its per-zombie `AvatarZombieController.LateUpdate` hook and the weather CVars it writes on every entity every tick are next. Also spotted in the code: BiomeLevelScaling rebuilding a save path every frame, Spiders Can Climb's per-tick string checks, and the RAM affix patches on item stat lookups.
+Real numbers decide what gets fixed next. With ShockShader and the two SCore hooks sorted, SCore is down from 19 to 13.5 ms/s with ~45 zombies and nothing else is close to it on the main thread. What's left is spread thin: SCore's MoveHelper and teleport-check hooks (~1.3 µs per zombie each), the RAM affix patches on item stat lookups, AsylumSleeperWakeFix's per-tick string checks, Spiders Can Climb. Past that, the cost is vanilla's own entity ticking (~73 µs per zombie per tick) and the only lever there is the AI throttle.
 
 AsylumRegionIoGate shows up high in `kperf` too, but it runs on the chunk save thread (marked `[bg]`), so it doesn't hold up ticks.
 
