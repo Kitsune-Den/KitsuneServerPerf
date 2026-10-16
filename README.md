@@ -89,11 +89,23 @@ Server-side only. Clients don't need it.
 [KitsuneServerPerf] HusbandryGetValueFilter: skipped, CrystalHellHusbandry not loaded
 ```
 
-Needs 7 Days to Die V3.x with the built-in `0_TFP_Harmony` mod. EAC has to be off, like any code mod. It doesn't ship its own Harmony.
+Needs 7 Days to Die V2.6 or V3.x with the built-in `0_TFP_Harmony` mod. EAC has to be off, like any code mod. It doesn't ship its own Harmony.
 
-Not just for Asylum. `kperf` and the vanilla fixes work on any V3.x server, vanilla or modded, and the fixes for specific mods (SCore, ShockShaderPatch, WMMZombieRandomBuffs and so on) switch themselves on wherever that mod shows up. If a mod isn't there, or is a version whose code doesn't look like what the fix expects, the fix logs "skipped" and stays out of the way.
+Not just for Asylum. `kperf` and the vanilla fixes work on any server, vanilla or modded, and the fixes for specific mods (SCore, ShockShaderPatch, WMMZombieRandomBuffs and so on) switch themselves on wherever that mod shows up. If a mod isn't there, or is a version whose code doesn't look like what the fix expects, the fix logs "skipped" and stays out of the way.
 
-Tested so far: vanilla 3.3 (loads clean, every fix applies) and The Asylum 3.3 with a player and hordes (all the numbers in this README). Not tested yet on V2.x or other big overhauls. If you run it on one, a `kperf` report would be very welcome.
+Tested so far:
+
+- vanilla 3.3: loads clean, every fix applies
+- The Asylum 3.3 with a player and hordes (most of the numbers in this README)
+- Undead Legacy 2.7.40 on V2.6, same DLL, with a player and a 50 zombie crowd (below)
+
+Not tested yet on V1.x or other big overhauls. If you run it on one, a `kperf` report would be very welcome.
+
+### Undead Legacy
+
+We went looking for Undead Legacy's version of the ShockShader problem and didn't find one. With ~50 zombies on a player, UL's own code (all 366 of its patches) cost the server about 7 ms of CPU a second, and 4 of those are its zombie-digging movement, which replaces vanilla's and is real work. The whole server tick came to about 54 ms/s, half of what Asylum used with a similar crowd. The AI throttle barely moved it either (54 to 50 ms/s), because UL's zombie AI is cheap per update to begin with.
+
+So on Undead Legacy you get the two vanilla fixes and `kperf`, and that's honestly about it. If a UL server is struggling, it's almost certainly the sheer number of zombies (UL wandering hordes allow 100 to 256 alive, biome spawns run 2 to 4 times vanilla). That's a gameplay setting, not something to patch, and `kperf census` will tell you how many you've actually got.
 
 ## Settings
 
