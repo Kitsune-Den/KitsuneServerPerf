@@ -50,6 +50,7 @@ namespace KitsuneServerPerf
             Apply("HusbandryGetValueFilter", AsylumFixes.ApplyHusbandryGetValue);
             Apply("HealFixCVarFilter", AsylumFixes.ApplyHealFix);
             Apply("RandomBuffsUpdateFilter", AsylumFixes.ApplyRandomBuffs);
+            Apply("ShockShaderElectrocuteFilter", AsylumFixes.ApplyShockShader);
         }
 
         private static void OnGameShutdown(ref ModEvents.SGameShutdownData _)

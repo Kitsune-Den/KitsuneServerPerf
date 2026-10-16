@@ -43,6 +43,7 @@ Each of these does exactly what the original code did, with less work. All on by
 - **CrystalHellHusbandry**: its `EffectManager.GetValue` postfix runs on every stat lookup in the game and does string work before it checks which stat it's looking at. It only changes 6 or so stats. Now it only runs for those.
 - **AsylumHealFix**: reads a field by reflection after every CVar change in the game to see if it's the one CVar it cares about. Now it checks directly first.
 - **WMMZombieRandomBuffs + AsylumZRBCompat**: both run every frame on every entity, players and animals included, lower-casing the class name each time. Now they only run on entities they'd actually do something to.
+- **ShockShaderPatch_Emu46**: this was the big one. Vanilla tells every zombie to switch its electric-shock effect *off* every single frame, even when nothing's shocking it. Vanilla's own version of that is cheap. This mod's version walks every renderer and material on the zombie to do it (and `renderer.materials` hands back a fresh array each time). Measured on an Asylum server with ~65 zombies: 25 µs per zombie per frame, 34 ms of CPU every second, more than all of SCore. Now the walk only happens when the shock was actually on. Same zombies, same horde: 0.7 µs.
 
 None of these replace the other mod's code. Each one is a small filter in front of the original patch that says "skip it" only in the cases where it would have returned without doing anything anyway. The original patch keeps its place in the patch order.
 
@@ -105,7 +106,9 @@ The mod folder is ready at `KitsuneServerPerf/`.
 
 ## What's next
 
-The profiler is the point of v0.1. Real numbers from a busy Asylum server decide what gets fixed next. Candidates already spotted in the code: SCore's per-zombie `LateUpdate` hook, BiomeLevelScaling rebuilding a save path every frame, Spiders Can Climb's per-tick string checks, and the RAM affix patches on item stat lookups.
+Real numbers decide what gets fixed next. With ShockShader sorted, SCore is the most expensive mod on an Asylum server (about 19 ms/s with ~45 zombies): its per-zombie `AvatarZombieController.LateUpdate` hook and the weather CVars it writes on every entity every tick are next. Also spotted in the code: BiomeLevelScaling rebuilding a save path every frame, Spiders Can Climb's per-tick string checks, and the RAM affix patches on item stat lookups.
+
+AsylumRegionIoGate shows up high in `kperf` too, but it runs on the chunk save thread (marked `[bg]`), so it doesn't hold up ticks.
 
 ## License
 

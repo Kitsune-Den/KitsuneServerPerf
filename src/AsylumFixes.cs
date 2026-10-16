@@ -93,6 +93,59 @@ namespace KitsuneServerPerf
             return __1?.Self != null && __0 != null && __0.cvarName == HealCVar;
         }
 
+        // ---- ShockShaderPatch_Emu46: AvatarZombieController.Electrocute prefix ---------
+        //
+        // Vanilla AvatarController.Update calls Electrocute(false) on every zombie every
+        // frame while it isn't being shocked. This prefix replaces it: it walks every
+        // Renderer on the zombie, reads renderer.materials (a fresh array each time) and
+        // turns the _ELECTRIC_SHOCK_ON keyword off, then calls StartAnimationElectrocute(0).
+        // Measured at ~25 us per zombie per frame on an Asylum server, the biggest single
+        // mod cost there.
+        //
+        // Turning the keyword off when it's already off does nothing, so after the first
+        // "off" for a zombie we skip the renderer walk until something turns it back on,
+        // and only make the StartAnimationElectrocute(0) call the prefix would have made.
+
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<AvatarZombieController, object> shockOff =
+            new System.Runtime.CompilerServices.ConditionalWeakTable<AvatarZombieController, object>();
+        private static readonly object marker = new object();
+
+        public static string ApplyShockShader()
+        {
+            MethodBase electrocute = AccessTools.Method(typeof(AvatarZombieController), nameof(AvatarZombieController.Electrocute));
+            MethodInfo patch = Compat.FindInstalledPatch(electrocute, "AvatarZombieControllerPatches+AZC_Electrocute", "Prefix");
+            if (patch == null)
+            {
+                return "ShockShaderPatch_Emu46 not loaded";
+            }
+            Compat.AddFilter(patch, typeof(AsylumFixes), nameof(ShockShaderFilter));
+            return null;
+        }
+
+        // __0 / __1: the prefix's own (AvatarZombieController __instance, bool enabled).
+        // __result is that prefix's bool return: false means "skip vanilla Electrocute",
+        // which is what it always returns.
+        private static bool ShockShaderFilter(AvatarZombieController __0, bool __1, ref bool __result)
+        {
+            if (__0 == null)
+            {
+                return true;
+            }
+            if (__1)
+            {
+                shockOff.Remove(__0);
+                return true;
+            }
+            if (shockOff.TryGetValue(__0, out _))
+            {
+                __0.StartAnimationElectrocute(0f);
+                __result = false;
+                return false;
+            }
+            shockOff.Add(__0, marker);
+            return true;
+        }
+
         // ---- WMMZombieRandomBuffs + AsylumZRBCompat: EntityAlive.Update postfixes ------
         //
         // Both run every frame for every entity. Each lower-cases the entity class name,

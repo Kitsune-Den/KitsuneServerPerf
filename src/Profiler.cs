@@ -58,6 +58,7 @@ namespace KitsuneServerPerf
             public string Mod;      // null for vanilla methods
             public long Ticks;
             public long Calls;
+            public long BackgroundCalls;
         }
 
         private enum State { Idle, Installing, Running, Removing }
@@ -74,6 +75,7 @@ namespace KitsuneServerPerf
         private static volatile bool collecting;
         private static bool cancelInstall;
         private static int runId;
+        private static int mainThreadId;
         private static long startTimestamp;
         private static int startFrame;
         private static string startCensus;
@@ -96,6 +98,7 @@ namespace KitsuneServerPerf
             }
 
             harmony = harmony ?? new Harmony(HarmonyId);
+            mainThreadId = Thread.CurrentThread.ManagedThreadId;
             Dictionary<Assembly, string> modByAssembly = MapAssembliesToMods();
             var newStats = new Dictionary<MethodBase, Stat>();
             var targets = new List<MethodBase>();
@@ -292,6 +295,10 @@ namespace KitsuneServerPerf
             {
                 Interlocked.Add(ref s.Ticks, Stopwatch.GetTimestamp() - __state);
                 Interlocked.Increment(ref s.Calls);
+                if (Thread.CurrentThread.ManagedThreadId != mainThreadId)
+                {
+                    Interlocked.Increment(ref s.BackgroundCalls);
+                }
             }
         }
 
@@ -318,6 +325,7 @@ namespace KitsuneServerPerf
             sb.Append($"Sampled {seconds:0.0} s, {frames} frames ({frames * perSecond:0.0} fps; a dedicated server aims for 20).\n");
             sb.Append("ms/s = milliseconds of CPU per second. 1000 ms/s is one full core; the main thread can't go past that.\n");
             sb.Append("Times are inclusive, so rows overlap. Very fast methods called very often read a little high (the timer has a cost too).\n");
+            sb.Append("[bg] = mostly runs on a background thread, so it doesn't hold up the server's ticks.\n");
             sb.Append("At start:  ").Append(startCensus).Append('\n');
             sb.Append("At end:    ").Append(Census()).Append('\n');
 
@@ -352,7 +360,8 @@ namespace KitsuneServerPerf
                 double ms = s.Ticks * toMs;
                 double usPerCall = ms * 1000.0 / Math.Max(s.Calls, 1);
                 sb.Append($"{ms * perSecond,9:0.00} {s.Calls * perSecond,9:0} {usPerCall,9:0.0}  ");
-                sb.Append(withMod ? $"{s.Mod}: {s.Name}\n" : $"{s.Name}\n");
+                string bg = s.BackgroundCalls * 2 > s.Calls ? " [bg]" : "";
+                sb.Append(withMod ? $"{s.Mod}: {s.Name}{bg}\n" : $"{s.Name}{bg}\n");
             }
         }
 
@@ -364,7 +373,9 @@ namespace KitsuneServerPerf
             {
                 return "no world";
             }
-            int enemies = 0, animals = 0, npcs = 0, players = 0, full = 0, mid = 0, low = 0, lower = 0;
+            // Players aren't in EntityAlives, they have their own list.
+            int players = world.Players.list.Count;
+            int enemies = 0, animals = 0, npcs = 0, full = 0, mid = 0, low = 0, lower = 0;
             foreach (EntityAlive e in world.EntityAlives)
             {
                 if (e == null || e.IsDead())

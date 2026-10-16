@@ -39,6 +39,11 @@
 	     Now they skip entities they would ignore anyway (players, animals, NPCs). -->
 	<Fix name="RandomBuffsUpdateFilter" enabled="true" />
 
+	<!-- ShockShaderPatch_Emu46: vanilla turns the electric-shock effect "off" on every zombie
+	     every frame. This mod's version walks all the zombie's renderers and materials to do it.
+	     Now it only does that walk when the effect was actually on. -->
+	<Fix name="ShockShaderElectrocuteFilter" enabled="true" />
+
 	<!--
 	  AI distance throttling. Vanilla already slows AI down for zombies that are not
 	  among the closest few to a player: 0.3 within 15 m, 0.1 beyond that (1.0 = think every tick).
