@@ -35,12 +35,12 @@ In-game settings page for admins (Esc menu, Server Perf). The server sends its U
 ## Requirements
 None. The game's built-in 0_TFP_Harmony is all it needs. KitsuneUI is optional for the Settings Page add-on (it picks up KitsuneUI's look).
 
-## Permissions (matches the MIT licence on GitHub)
-- Upload: allowed, with credit.
-- Modification: allowed, with credit.
-- Conversion: allowed, with credit.
-- Asset use: allowed, with credit.
-- Commercial use: allowed (MIT), credit appreciated.
+## Permissions (matches the CC BY-NC-SA 4.0 licence on GitHub)
+- Upload: allowed, with credit; not for sale.
+- Modification: allowed, with credit; changed versions under the same licence.
+- Conversion: allowed, with credit; under the same licence.
+- Asset use: allowed, with credit; under the same licence.
+- Commercial use: not allowed. Running it on a server that takes donations or sells perks is fine.
 
 ## Images
 1. kitsune-performance.jpg: main image. "Kitsune Performance"

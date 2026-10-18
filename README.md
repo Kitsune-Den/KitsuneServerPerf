@@ -158,4 +158,4 @@ AsylumRegionIoGate shows up high in `kperf` too, but it runs on the chunk save t
 
 ## License
 
-MIT
+[CC BY-NC-SA 4.0](LICENSE), with an extra permission for servers that make money: see [NOTICE.md](NOTICE.md). In short: play it, change it and share it, with credit, not for sale, and with changed versions under the same license.
