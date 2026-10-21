@@ -5,5 +5,5 @@
 	<Description value="Server-side CPU fixes for 7 Days to Die and heavy overhaul packs, plus a kperf console command that shows which code and which mods use the server's time." />
 	<Website value="https://github.com/Kitsune-Den/KitsuneServerPerf" />
 	<Author value="AdaInTheLab" />
-	<Version value="0.2.0" />
+	<Version value="0.2.1" />
 </xml>

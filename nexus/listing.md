@@ -9,7 +9,7 @@ Kitsune Performance - Server CPU Fixes and Profiler
 Utilities
 
 ## Version
-0.2.0
+0.2.1
 
 ## Brief overview
 Server-side CPU fixes for 7 Days to Die (V2.6 and V3), plus kperf, a profiler that shows which mods eat your server. On The Asylum, one cosmetic mod was costing more CPU than SCore. Players don't need to install anything.
@@ -19,6 +19,9 @@ Server-side only. Unzip to Mods on the server and restart. V2.6 and V3.x, EAC of
 
 ## Optional file: KitsuneServerPerf_UI (Settings Page)
 In-game settings page for admins (Esc menu, Server Perf). The server sends its UI to every player, so if your server runs this, every player needs it too. Needs the main file. Works with or without KitsuneUI.
+
+## Changelog 0.2.1
+- Now licensed under CC BY-NC-SA 4.0 instead of MIT. No code changes.
 
 ## Changelog 0.2.0
 - Switch any fix on or off while the server runs: kperf settings, kperf set. Changes save to Settings.xml.
